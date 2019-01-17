@@ -5,14 +5,56 @@ import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
-  state = {
-    persons: [
-      { id: '%asdDDr1872Z', name: 'Max', age: 28 },
-      { id: 'sffRR%&hh25w', name: 'Diane', age: 26 },
-      { id: 'sPoO*^5md%P2', name: 'Leo', age: 26 }
-    ],
-    showPersons: false
-  };
+  constructor(props) {
+    super(props);
+    console.log('[App.js] Inside constroctor', props);
+    this.state = {
+      persons: [
+        { id: '%asdDDr1872Z', name: 'Max', age: 28 },
+        { id: 'sffRR%&hh25w', name: 'Diane', age: 26 },
+        { id: 'sPoO*^5md%P2', name: 'Leo', age: 26 }
+      ],
+      showPersons: false
+    };
+  }
+
+  componentWillMount() {
+    console.log('[App.js] Inside componentWillMount()');
+  }
+
+  componentDidMount() {
+    console.log('[App.js] Inside componentDidMount()');
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log(
+      '[UPDATE App.js] Inside shouldComponentUpdate()',
+      nextProps,
+      nextState
+    );
+    return true;
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    console.log(
+      '[UPDATE App.js] Inside componentWillUpdate()',
+      nextProps,
+      nextState
+    );
+  }
+
+  componentDidUpdate() {
+    console.log('[UPDATE App.js] Inside componentDidUpdate()');
+  }
+
+  // state = {
+  //   persons: [
+  //     { id: '%asdDDr1872Z', name: 'Max', age: 28 },
+  //     { id: 'sffRR%&hh25w', name: 'Diane', age: 26 },
+  //     { id: 'sPoO*^5md%P2', name: 'Leo', age: 26 }
+  //   ],
+  //   showPersons: false
+  // };
 
   nameChangedHandler = (event, id) => {
     const personIndex = this.state.persons.findIndex(p => {
@@ -41,6 +83,7 @@ class App extends Component {
   };
 
   render() {
+    console.log('[App.js] Inside render()');
     let persons = null;
 
     if (this.state.showPersons) {
@@ -55,6 +98,13 @@ class App extends Component {
 
     return (
       <div className={classes.App}>
+        <button
+          onClick={() => {
+            this.setState({ showPersons: true });
+          }}
+        >
+          showPersons
+        </button>
         <Cockpit
           showPersons={this.state.showPersons}
           persons={this.state.persons}
