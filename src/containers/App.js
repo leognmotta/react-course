@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
+import withClass from '../hoc/withClass';
 
 class App extends Component {
   constructor(props) {
@@ -14,7 +15,9 @@ class App extends Component {
         { id: 'sffRR%&hh25w', name: 'Diane', age: 26 },
         { id: 'sPoO*^5md%P2', name: 'Leo', age: 26 }
       ],
-      showPersons: false
+      showPersons: false,
+      toggleClicked: 0,
+      authenticated: false
     };
   }
 
@@ -79,7 +82,16 @@ class App extends Component {
 
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
-    this.setState({ showPersons: !doesShow });
+    this.setState((prevState, props) => {
+      return {
+        showPersons: !doesShow,
+        toggleClicked: prevState.toggleClicked + 1
+      };
+    });
+  };
+
+  loginHandler = () => {
+    this.setState({ authenticated: true });
   };
 
   render() {
@@ -92,12 +104,13 @@ class App extends Component {
           persons={this.state.persons}
           clicked={this.deletePersonHandler}
           changed={this.nameChangedHandler}
+          authenticated={this.state.authenticated}
         />
       );
     }
 
     return (
-      <div className={classes.App}>
+      <>
         <button
           onClick={() => {
             this.setState({ showPersons: true });
@@ -108,12 +121,13 @@ class App extends Component {
         <Cockpit
           showPersons={this.state.showPersons}
           persons={this.state.persons}
+          login={this.loginHandler}
           clicked={this.togglePersonsHandler}
         />
         {persons}
-      </div>
+      </>
     );
   }
 }
 
-export default App;
+export default withClass(App, classes.App);
